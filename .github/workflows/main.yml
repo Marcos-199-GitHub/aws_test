@@ -13,6 +13,13 @@ jobs:
       contents: read  # Required to check out the repository
     steps:
       - uses: actions/checkout@v4
+
+      - name: Build Lambda package
+        run: |
+          rm -rf dist
+          mkdir dist
+          pip install -r requirements.txt -t dist
+          cp main.py dist/
       
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
