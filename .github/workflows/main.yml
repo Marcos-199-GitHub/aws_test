@@ -20,9 +20,16 @@ jobs:
           rm -rf dist 
           mkdir dist
           # Instalar dependencias en la carpeta dist
-          pip install -r requirements.txt -t dist
+          # pip install -r requirements.txt -t dist
           # Copiar tu código (asegúrate de incluir todos los archivos necesarios)
           cp main.py dist/
+          
+          # Usamos un contenedor oficial de AWS para instalar las dependencias.
+          # Esto garantiza que los binarios de Numpy sean compatibles con Lambda.
+          # IMPORTANTE: Cambia 'python3.12' por la versión que uses en tu Lambda (ej: 3.9, 3.10, 3.11).
+          docker run --rm -v "$PWD":/var/task public.ecr.aws/sam/build-python3.12:latest \
+            /bin/sh -c "pip install -r requirements.txt -t dist"
+            
           # 2. Entrar a dist y comprimir EL CONTENIDO (no la carpeta en sí)
           cd dist
           zip -r ../lambda_package.zip .
