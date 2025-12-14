@@ -15,24 +15,12 @@ jobs:
       - uses: actions/checkout@v4
 
       # 1. Preparar dependencias y código
-      - name: Build and Zip Lambda package
+      - name: Copy Lambda package
         run: |
           rm -rf dist 
           mkdir dist
-          # Instalar dependencias en la carpeta dist
-          # pip install -r requirements.txt -t dist
-          # Copiar tu código (asegúrate de incluir todos los archivos necesarios)
           cp main.py dist/
-          
-          # Usamos un contenedor oficial de AWS para instalar las dependencias.
-          # Esto garantiza que los binarios de Numpy sean compatibles con Lambda.
-          # IMPORTANTE: Cambia 'python3.12' por la versión que uses en tu Lambda (ej: 3.9, 3.10, 3.11).
-          docker run --rm -v "$PWD":/var/task public.ecr.aws/sam/build-python3.12:latest \
-            /bin/sh -c "pip install -r requirements.txt -t dist"
-            
-          # 2. Entrar a dist y comprimir EL CONTENIDO (no la carpeta en sí)
-          cd dist
-          zip -r ../lambda_package.zip .
+          cp horarios26_1_v2.csv dist/
       
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -40,17 +28,10 @@ jobs:
           role-to-assume: arn:aws:iam::691593636727:role/OICD_GITHUB
           aws-region: us-east-2
 
-      # 3. Desplegar usando AWS CLI
-      - name: Deploy Lambda Function
-        run: |
-          aws lambda update-function-code \
-            --function-name adsadasdadadfsfsdfefsdfsdsfasdw \
-            --zip-file fileb://lambda_package.zip
 
-            
-      #- name: Deploy Lambda Function
-      #  uses: aws-actions/aws-lambda-deploy@v1
-      #  with:
-      #    function-name: adsadasdadadfsfsdfefsdfsdsfasdw
-      #    code-artifacts-dir: ./dist
+      - name: Deploy Lambda Function
+        uses: aws-actions/aws-lambda-deploy@v1
+        with:
+          function-name: adsadasdadadfsfsdfefsdfsdsfasdw
+          code-artifacts-dir: ./dist
           
