@@ -17,6 +17,7 @@ jobs:
       # 1. Preparar dependencias y código
       - name: Build and Zip Lambda package
         run: |
+          rm -rf dist 
           mkdir dist
           # Instalar dependencias en la carpeta dist
           pip install -r requirements.txt -t dist
