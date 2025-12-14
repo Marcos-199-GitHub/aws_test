@@ -34,4 +34,11 @@ jobs:
         with:
           function-name: adsadasdadadfsfsdfefsdfsdsfasdw
           code-artifacts-dir: ./dist
-          
+
+      - name: Update Lambda configuration
+        run: |
+          aws lambda update-function-configuration \
+            --function-name adsadasdadadfsfsdfefsdfsdsfasdw \
+            --runtime python3.12 \
+            --handler main.handler
+
