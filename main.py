@@ -29,10 +29,10 @@ def getNombresAsignaturas():
         # Convertimos el set a una lista ordenada para mostrarla mejor
         lista_ordenada = sorted(list(asignaturas_unicas))
 
-        print(f"Total de asignaturas encontradas: {len(lista_ordenada)}")
-        for asig in lista_ordenada:
-            print(asig)
-
+        #print(f"Total de asignaturas encontradas: {len(lista_ordenada)}")
+        #for asig in lista_ordenada:
+            #print(asig)
+        return lista_ordenada
     except FileNotFoundError:
         print("El archivo no se encuentra. Revisa la ruta.")
 
